@@ -1,21 +1,39 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header'
+import MainSection from './components/MainSection'
+import './App.css'
+import {connect} from 'react-redux';
 
 class App extends Component {
+  constructor (props) {
+    super()
+  }
   render() {
+      let {todos} = this.props;
+      let doneNum = 0;
+      console.log(todos);
+      todos.forEach(item => {
+          if(!item.done) {
+              doneNum ++
+          }
+      })
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+          <Header></Header>
+          <hr/>
+          <MainSection></MainSection>
+          <hr/>
+          <h3>剩余未完成:{doneNum}</h3>
       </div>
     );
   }
 }
 
-export default App;
+export default connect(
+    state => (
+        {
+            todos: state.todos
+        }
+    ),
+    null
+)(App);
